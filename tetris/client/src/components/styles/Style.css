@@ -1,0 +1,89 @@
+@font-face {
+	font-family: 'theboldfont';
+	src: url('../../fonts/theboldfont.ttf');
+	src:
+		local('theboldfont'),
+		url('../../fonts/theboldfont.ttf')
+		format('opentype');
+}
+html, body
+{
+    height: 100%;
+    margin: 0;
+}
+@media (min-width: 1025px) {
+  body {
+      min-height:100%;
+  }
+}
+a {
+  height: fit-content;
+}
+p {
+  margin: 0;
+}
+#root {
+  background: black;
+  min-height:100%;
+}
+span {
+  font-family: 'theboldfont';
+  display: flex;
+}
+.error-number-required {
+  display: none;
+  font-size: xx-small;
+  color: red;
+  padding-top: 5px;
+
+}
+.error-char-required {
+  display: none;
+  font-size: xx-small;
+  color: red;
+  padding-top: 5px;
+}
+.menu_label {
+  margin: 2vh;
+  font-size: 1.2em;
+  white-space: nowrap;
+}
+.menu_input {
+  display: flex;
+  margin: 1em;
+  flex-direction: column;
+  align-items: center;
+}
+.menu_input:hover .error-number-required {
+  opacity: 1;
+  display: block;
+}
+.menu_input:hover .error-char-required {
+  opacity: 1;
+  display: block;
+}
+.title-reverse {
+
+}
+button.button-to-game {
+  padding: 0.7em 1.4em;
+  margin: 0 0.3em 0.3em 0;
+  border-radius: 0.15em;
+  box-sizing:  border-box;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: #FFFFFF;
+  background-color: #3369ff;
+  box-shadow: inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17);
+  text-align: center;
+  position: relative;
+  font-family: 'theboldfont';
+  width: 50%;
+}
+button.button-to-game:active {
+  top: 0.1em;
+}
+button:disabled {
+  background-color: grey;
+}

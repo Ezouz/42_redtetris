@@ -1,0 +1,125 @@
+version: '3'
+services:
+
+  ${TETRIS_APP_CONTAINER_NAME}:
+    image: node:10
+    container_name: ${TETRIS_APP_CONTAINER_NAME}
+    volumes:
+      - .${TETRIS_FOLDER}/client/build:/home/node/public/
+      - .${TETRIS_FOLDER}/client/serve-client:/home/node/app/
+    environment:
+      - REACT_APP_TETRIS_APP_PORT=${TETRIS_APP_PORT}
+      - REACT_APP_DOMAIN=${DOMAIN}
+      - REACT_APP_TETRIS_API_PORT=${TETRIS_API_PORT}
+      - REACT_APP_NODE_ENV=${NODE_ENV}
+    working_dir: /home/node/app
+    command: "bash -c 'npm install; npm run start'"
+    ports:
+      - ${TETRIS_APP_PORT}:${TETRIS_APP_PORT}
+    restart: unless-stopped
+    networks:
+      - user-network
+
+  ${SERVER_CONTAINER_NAME}:
+    image: nginx:mainline-alpine
+    container_name: ${SERVER_CONTAINER_NAME}
+    restart: unless-stopped
+    ports:
+      - "80:80"
+#      - "443:443"
+    volumes:
+      - web-root:/var/www/html
+      - ./config/nginx-conf/nginx-envsubst.conf:/etc/nginx/conf.d/nginx.conf
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+#     - ./config/dhparam:/etc/ssl/certs
+    depends_on:
+      - ${TETRIS_APP_CONTAINER_NAME}
+      - ${TETRIS_API_CONTAINER_NAME}
+      - ${DATABASE_ADMINER}
+    networks:
+      - user-network
+
+#  certbot:
+#    image: certbot/certbot
+#    container_name: certbot
+#    volumes:
+#      - certbot-etc:/etc/letsencrypt
+#      - certbot-var:/var/lib/letsencrypt
+#      - web-root:/var/www/html
+#    depends_on:
+#      - ${SERVER_CONTAINER_NAME}
+#    command: certonly --webroot --webroot-path=/var/www/html --email ${CONTACT_EMAIL} --agree-tos --no-eff-email --staging -d ${DOMAIN} -d ${URL_NAME}
+# after the test, replace the --staging flag by --force-renewal
+#    command: certonly --webroot --webroot-path=/var/www/html --email ${CONTACT_EMAIL} --agree-tos --no-eff-email --force-renewal -d ${DOMAIN} -d ${URL_NAME}
+
+  ${DATABASE_CONTAINER_NAME}:
+    image: postgres:latest
+    container_name: ${DATABASE_CONTAINER_NAME}
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PWD}
+    volumes:
+      - .${TETRIS_FOLDER}/server/db:/docker-entrypoint-initdb.d/
+    ports:
+      - ${POSTGRES_PORT}:5432
+    restart: always
+
+  ${DATABASE_ADMINER}:
+    image: adminer
+    container_name: ${DATABASE_ADMINER}
+    restart: always
+    depends_on:
+      - ${DATABASE_CONTAINER_NAME}
+    ports:
+      - ${ADMIN_PORT}:${DATABASE_ADMINER_PORT}
+    links:
+      - ${DATABASE_CONTAINER_NAME}
+    networks:
+      - user-network
+
+  ${TETRIS_API_CONTAINER_NAME}:
+    image: node:10
+    container_name: ${TETRIS_API_CONTAINER_NAME}
+    volumes:
+      - .${TETRIS_FOLDER}/server:/home/node/app/api
+#      - certbot-var:/var/lib/letsencrypt
+#      - .${TETRIS_FOLDER}/server:/home/node/app/api
+#      - ./config/dhparam:/etc/ssl/certs
+    environment:
+      - MAIN_PORT=${TETRIS_API_PORT}
+      - DOMAIN=${DOMAIN}
+      - PG_HOST=${DATABASE_CONTAINER_NAME}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PWD}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+    working_dir: /home/node/app/api
+    command: "bash -c 'npm install; npm run start'"
+    ports:
+      - ${TETRIS_API_PORT}:${TETRIS_API_PORT}
+    restart: always
+    depends_on:
+      - ${DATABASE_ADMINER}
+      - ${DATABASE_CONTAINER_NAME}
+    networks:
+      - user-network
+
+volumes:
+  certbot-etc:
+  certbot-var:
+  web-root:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}${TETRIS_FOLDER}/client/build
+      o: bind
+#   dhparam:
+#     driver: local
+#     driver_opts:
+#       type: none
+#       device: ${PWD}/config/dhparam/
+#       o: bind
+
+networks:
+ user-network:
+   driver: bridge

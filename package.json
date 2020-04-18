@@ -1,0 +1,31 @@
+{
+  "name": "42-red-tetris",
+  "version": "1.0.0",
+  "description": "tetris multiplayer",
+  "main": "index.js",
+  "scripts": {
+    "start": "bash -c './config/start-server.sh'",
+    "start:dev": "bash -c './config/start-server.dev.sh'",
+    "log": "docker-compose logs -f -t",
+    "log:dev": "docker-compose -f docker-compose.dev.yml logs -t"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ezouz/42_redtetris.git"
+  },
+  "keywords": [
+    "react",
+    "js",
+    "node",
+    "api",
+    "postgres",
+    "docker",
+    "socket.io"
+  ],
+  "author": "ehouzard && ccorsin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ezouz/42_redtetris.git/issues"
+  },
+  "homepage": "https://github.com/Ezouz/42_redtetris.git#readme"
+}

@@ -1,0 +1,31 @@
+{
+  "name": "red_tetrisfuckingboilerplate",
+  "version": "0.0.1",
+  "author": "MarieChantal",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js",
+    "server:dev": "nodemon -L index.js",
+    "test": "jest",
+    "coverage": "jest --coverage",
+    "lint": "./node_modules/.bin/eslint --fix '**/*.js'"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "fs": "0.0.1-security",
+    "https": "^1.0.0",
+    "pg": "^8.0.0",
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.0"
+  },
+  "devDependencies": {
+    "babel": "^6.23.0",
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.8.0",
+    "eslint-plugin-jest": "^23.7.0",
+    "jest": "^25.1.0",
+    "nodemon": "^2.0.2"
+  }
+}

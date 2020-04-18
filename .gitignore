@@ -1,0 +1,12 @@
+# Don't track content of these folders
+.DS_Store
+node_modules/
+package-lock.json
+.swp
+coverage/
+_assets-folder
+.env
+.env.dev
+config/dhparam/
+docker-compose.dev.yml
+docker-compose.yml

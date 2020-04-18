@@ -1,0 +1,19 @@
+{
+  "name": "red_tetrisfuckingboilerplate",
+  "version": "0.0.1",
+  "author": "redpelicans",
+  "license": "MIT",
+  "scripts": {
+    "client:dev": "npm run start --prefix ./client/",
+    "server:dev": "npm run server:dev --prefix ./server/",
+    "client:dist": "npm run build --prefix ./client/",
+    "server:test": "npm run test --prefix ./server/",
+    "server:coverage": "npm run coverage --prefix ./server/",
+    "client:test": "npm run test --prefix ./client/",
+    "coverage:all": "npm run coverage --prefix ./client/ && npm run coverage --prefix ./server/",
+    "client:coverage": "npm run coverage --prefix ./client/",
+    "set-app": "npm install --prefix ./client/ && npm install --prefix ./server/"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

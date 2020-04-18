@@ -1,0 +1,61 @@
+version: '3'
+services:
+  ${TETRIS_APP_CONTAINER_NAME}:
+    image: node:10
+    container_name: ${TETRIS_APP_CONTAINER_NAME}
+    volumes:
+      - .${TETRIS_FOLDER}/client:/home/node/public/
+    environment:
+      - REACT_APP_TETRIS_APP_PORT=${TETRIS_APP_PORT}
+      - REACT_APP_DOMAIN=${DOMAIN}
+      - REACT_APP_TETRIS_API_PORT=${TETRIS_API_PORT}
+      - REACT_APP_NODE_ENV=${NODE_ENV}
+    working_dir: /home/node/public
+    command: "bash -c 'npm install; npm run start'"
+    ports:
+      - ${TETRIS_APP_PORT}:${TETRIS_APP_PORT}
+    restart: unless-stopped
+
+  ${DATABASE_CONTAINER_NAME}:
+    image: postgres:latest
+    container_name: ${DATABASE_CONTAINER_NAME}
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PWD}
+    volumes:
+      - .${TETRIS_FOLDER}/server/db:/docker-entrypoint-initdb.d/
+    ports:
+      - ${POSTGRES_PORT}:5432
+    restart: always
+
+  ${DATABASE_ADMINER}:
+    image: adminer
+    container_name: ${DATABASE_ADMINER}
+    restart: always
+    depends_on:
+      - ${DATABASE_CONTAINER_NAME}
+    ports:
+      - ${ADMIN_PORT}:${DATABASE_ADMINER_PORT}
+    links:
+      - ${DATABASE_CONTAINER_NAME}
+
+  ${TETRIS_API_CONTAINER_NAME}:
+    image: node:10
+    container_name: ${TETRIS_API_CONTAINER_NAME}
+    volumes:
+      - .${TETRIS_FOLDER}/server:/home/node/app/api
+    environment:
+      - MAIN_PORT=${TETRIS_API_PORT}
+      - DOMAIN=${DOMAIN}
+      - PG_HOST=${DATABASE_CONTAINER_NAME}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PWD}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+    working_dir: /home/node/app/api
+    command: "bash -c 'npm install; npm run server:dev'"
+    ports:
+      - ${TETRIS_API_PORT}:${TETRIS_API_PORT}
+    restart: always
+    depends_on:
+      - ${DATABASE_ADMINER}
+      - ${DATABASE_CONTAINER_NAME}
