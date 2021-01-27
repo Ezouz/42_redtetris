@@ -1,5 +1,14 @@
 import styled from 'styled-components';
 
+export const StyledNotApp = styled.div`
+  padding-top: 2em; 
+  z-index: 1; 
+  color:red; 
+  font-size: 2em;
+  width: 60%;
+  margin: auto;
+`;
+
 export const StyledApp = styled.div`
   background: black;
   font-family: 'theboldfont';

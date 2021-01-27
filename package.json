@@ -27,5 +27,8 @@
   "bugs": {
     "url": "https://github.com/Ezouz/42_redtetris.git/issues"
   },
-  "homepage": "https://github.com/Ezouz/42_redtetris.git#readme"
+  "homepage": "https://github.com/Ezouz/42_redtetris.git#readme",
+  "dependencies": {
+    "react-device-detect": "^1.15.0"
+  }
 }

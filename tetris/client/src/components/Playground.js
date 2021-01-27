@@ -99,8 +99,6 @@ const Playground = ({ setIsAlert, setAlertMessage, setIsRunning }) => {
         setAlertMessage("A game is currently running in this room. Please chose another number.");
       });
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket]);
 
   return (

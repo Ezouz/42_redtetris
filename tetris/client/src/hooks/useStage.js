@@ -32,7 +32,6 @@ export const useStage = (player, resetPlayer, gameOver) => {
 
   useEffect(() => {
     getSpectreHigh();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stage]);
 
   useEffect(() => {
@@ -83,7 +82,6 @@ export const useStage = (player, resetPlayer, gameOver) => {
       setStage(prev => updateStage(prev));
     }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     player.collided,
     player.pos.x,

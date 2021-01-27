@@ -13,14 +13,13 @@ const LeaderBoard = () => {
         setLeaderboard(tmp);
       }
     } catch (e) {
-      console.error("Network Error; Could not access the database to publish the leaderboard...");
+	console.error("Network Error; Could not access the database to publish the leaderboard...");
     }
   }
 
   useEffect(() => {
     isMounted.current = true;
     getLeaderBoard();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     return () => {
       isMounted.current = false;
     }

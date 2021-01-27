@@ -6,11 +6,17 @@ const socketIO = require('socket.io');
 class Socket {
     constructor(http) {
         this.games = new Games();
-        this.io = socketIO(http, { pingTimeout: 60000 });
+        this.io = socketIO(http, { 
+            cors: {
+                origin: "http://localhost:3005",
+                methods: ["GET", "POST"]
+              }, 
+              pingTimeout: 60000 
+            });
     }
 
     isRoom(games, room) {
-        for (var i = 0; i < games.length; i++) {
+        for (var i = 0; i < games.length ; i++) {
             if (games[i].room == room) {
                 return i;
             }
@@ -24,8 +30,8 @@ class Socket {
             socket.once('room', (room, username) => {
                 socket.username = username;
                 socket.room = room;
-                const player = new Player(username, socket.id);
-                let is_room = this.isRoom(this.games.games, room);
+                const player = new Player (username, socket.id);
+                let is_room = this.isRoom (this.games.games, room);
                 if (is_room >= 0 && this.games.games[is_room].running == false) {
                     this.games.add_player_to_game(player, this.games.games[is_room]);
                     socket.emit('message', 'Welcome to the game #' + socket.room + ' ' + socket.username + ' !');
@@ -41,24 +47,24 @@ class Socket {
                     socket.emit('message', 'Welcome to the game #' + socket.room + ' ' + socket.username + ' !');
                     socket.join(room);
                 }
-                if (this.io.sockets.adapter.rooms[room] !== undefined && this.io.sockets.adapter.rooms[room]['sockets'][socket.id] !== undefined) {
+                if(this.io.sockets.adapter.rooms[room] !== undefined && this.io.sockets.adapter.rooms[room]['sockets'][socket.id] !== undefined) {
                     socket.on('disconnect', () => {
                         process.stdout.write("Socket disconnected: " + socket.id + '\n');
                         socket.leave(room);
                         const { curGame, winner, ran } = this.games.player_leaving(this.isRoom(this.games.games, room), player);
-                        if (curGame !== undefined && curGame.players.length > 0) {
-                            this.io.sockets.in(room).emit('message', socket.username + ' has left the game');
-                            if (winner && ran === true) {
-                                this.io.sockets.in(room).emit('win', winner);
-                                this.io.sockets.in(room).emit('players', this.games.games[this.isRoom(this.games.games, room)].leader, this.games.games[this.isRoom(this.games.games, room)].players);
+                            if (curGame !== undefined && curGame.players.length > 0) {
+                                this.io.sockets.in(room).emit('message', socket.username + ' has left the game');
+                                if (winner && ran === true) {
+                                    this.io.sockets.in(room).emit('win', winner);
+                                    this.io.sockets.in(room).emit('players', this.games.games[this.isRoom (this.games.games, room)].leader, this.games.games[this.isRoom (this.games.games, room)].players);
+                                }
+                                else {
+                                    this.io.sockets.in(room).emit('players', this.games.games[this.isRoom (this.games.games, room)].leader, this.games.games[this.isRoom (this.games.games, room)].players);
+                                }
                             }
                             else {
-                                this.io.sockets.in(room).emit('players', this.games.games[this.isRoom(this.games.games, room)].leader, this.games.games[this.isRoom(this.games.games, room)].players);
+                                this.games.games.splice(this.isRoom (this.games.games, room), 1);
                             }
-                        }
-                        else {
-                            this.games.games.splice(this.isRoom(this.games.games, room), 1);
-                        }
                     })
                 }
                 else {
@@ -104,7 +110,7 @@ class Socket {
             });
             socket.on('reset', room => {
                 this.games.reset_one_game(this.isRoom(this.games.games, room))
-                this.io.sockets.in(room).emit('restart_game', this.games.games[this.isRoom(this.games.games, room)].players);
+                this.io.sockets.in(room).emit('restart_game', this.games.games[this.isRoom (this.games.games, room)].players);
             });
         });
     }

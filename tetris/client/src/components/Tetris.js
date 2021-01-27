@@ -168,7 +168,6 @@ const Tetris = ({ socket, room, playerCount }) => {
     else {
       setSpectrum("");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [players]);
 
   const collide = (playerData) => {
@@ -189,7 +188,6 @@ const Tetris = ({ socket, room, playerCount }) => {
         setSendSmash(0);
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [score, rows, level, sendSmash]);
 
   useEffect(() => {
@@ -235,7 +233,6 @@ const Tetris = ({ socket, room, playerCount }) => {
         postScore(player, currentPlayer);
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket]);
 
   return (

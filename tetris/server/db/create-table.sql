@@ -1,4 +1,4 @@
-CREATE SCHEMA IF NOT EXISTS tetris_postgres AUTHORIZATION user;
+CREATE SCHEMA IF NOT EXISTS tetris_postgres AUTHORIZATION user42;
 
 CREATE TABLE IF NOT EXISTS tetris_postgres.scores (
     score_id SERIAL PRIMARY KEY,

@@ -13,7 +13,7 @@ TETRIS_APP_PORT=10001
 
 #database
 DATABASE_CONTAINER_NAME=db
-POSTGRES_USER=user
+POSTGRES_USER=user42
 POSTGRES_PWD=password
 POSTGRES_PORT=5432
 DATABASE_ADMINER=db-admin
@@ -39,7 +39,7 @@ PWD_EMAIL=password
 ```
 #database
 DATABASE_CONTAINER_NAME=db
-POSTGRES_USER=user
+POSTGRES_USER=user42
 POSTGRES_PWD=example
 POSTGRES_PORT=5432
 DATABASE_ADMINER=db_admin
@@ -81,7 +81,6 @@ REACT_APP_TETRIS_API_PORT=${TETRIS_API_PORT}
 ```
 $ sudo service postgresql stop
 ```
-IMPORTANT : then use sudo to execute the commands below
 
 # to start the server with docker-compose
 ```

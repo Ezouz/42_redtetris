@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 
-import LeaderBoard from "./LeaderBoard";
 import { StyledMenuWrapper, StyledMenu } from "./styles/StyledMenu";
 import "./styles/Style.css";
 
@@ -72,9 +71,6 @@ const Menu = ({ leaveRoom }) => {
           </button>
         </div>
       </StyledMenu>
-      <div style={{ paddingTop: 2 + 'em' }}>
-        <LeaderBoard />
-      </div>
     </StyledMenuWrapper>
   );
 };
